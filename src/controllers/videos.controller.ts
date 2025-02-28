@@ -1,7 +1,9 @@
 import { Request, Response } from "express";
 import { SETTINGS } from "../settings/settings";
 import { DB } from "../db/db";
-import { validateAuthor, validateTitle, validateVideoQuality } from "../validation/validation";
+import { validateAuthor, validateMinAgeRestriction,
+        validatePublicationDate, validateTitle,
+        validateVideoQuality, validationCanBeDownloaded } from "../validation/validation";
 
 export const getAllVideos = (req: Request, res: Response) => {
     res.status(SETTINGS.STATUS.OK).json(DB.videos);
@@ -18,11 +20,16 @@ export const createVideo = (req: Request, res: Response) => {
     if (checkTitle.length > 0) errors.push(...checkTitle);
     if (checkAuthor.length > 0) errors.push(...checkAuthor);
     if (checkValidateVideoQuality.length > 0) errors.push(...checkValidateVideoQuality);
-    
+
     if (errors.length > 0) {
         res.status(SETTINGS.STATUS.BAD_REQUEST).json(errors);
         return;
     }
+
+    let createdAt = new Date().toISOString();
+    let createdDate = new Date(createdAt);
+    createdDate.setDate(createdDate.getDate() + 1);
+    let publicationDate = createdDate.toISOString();
 
     const newVideo = {
         id: Date.now() + Math.random(),
@@ -30,8 +37,8 @@ export const createVideo = (req: Request, res: Response) => {
         author,
         canBeDownloaded: false,
         minAgeRestriction: null,
-        createdAt: new Date().toISOString(),
-        publicationDate: new Date().toISOString(),
+        createdAt,
+        publicationDate,
         availableResolutions: [...availableResolutions],
     };
     DB.videos.push(newVideo);
@@ -51,30 +58,47 @@ export const getVideoById = (req: Request, res: Response) => {
 };
 
 export const updateVideo = (req: Request, res: Response) => {
+
     const id = Number(req.params.id);
-    const {
-        title,
-        author,
-        availableResolutions,
-        canBeDownloaded,
-        minAgeRestriction,
-        publicationDate,
-    } = req.body;
     const video = DB.videos.find((video) => video.id === id);
 
-    if (video) {
-        video.title = title;
-        video.author = author;
-        video.canBeDownloaded = canBeDownloaded;
-        video.minAgeRestriction = minAgeRestriction;
-        video.publicationDate = publicationDate;
-        video.availableResolutions = [...availableResolutions];
-        res.status(SETTINGS.STATUS.NO_CONTENT).json({});
+    if (!video) {
+        res.status(SETTINGS.STATUS.NOT_FOUND).json({});
         return;
     }
-    res
-        .status(SETTINGS.STATUS.BAD_REQUEST)
-        .json({ message: "Video BAD_REQUEST" });
+
+    const { title, author, availableResolutions, canBeDownloaded, minAgeRestriction, createdAt, publicationDate } = req.body;
+
+    const errors = [];
+    const checkTitle = validateTitle(title);
+    const checkAuthor = validateAuthor(author);
+    const checkValidateVideoQuality = validateVideoQuality(availableResolutions);
+    const checkCanBeDownloaded = validationCanBeDownloaded(canBeDownloaded);
+    const checkMinAgeRestriction = validateMinAgeRestriction(minAgeRestriction);
+    const checkPublicationDate = validatePublicationDate(publicationDate);
+
+    if (checkTitle.length > 0) errors.push(...checkTitle);
+    if (checkAuthor.length > 0) errors.push(...checkAuthor);
+    if (checkValidateVideoQuality.length > 0) errors.push(...checkValidateVideoQuality);
+    if (checkCanBeDownloaded.length > 0) errors.push(...checkCanBeDownloaded);
+    if (checkMinAgeRestriction.length > 0) errors.push(...checkMinAgeRestriction);
+    if (checkPublicationDate.length > 0) errors.push(...checkPublicationDate);
+
+
+    if (errors.length > 0) {
+        res.status(SETTINGS.STATUS.BAD_REQUEST).json(errors);
+        return;
+    }
+
+    video.title = title;
+    video.author = author;
+    video.canBeDownloaded = canBeDownloaded;
+    video.minAgeRestriction = minAgeRestriction;
+    video.createdAt = createdAt;
+    video.publicationDate = publicationDate;
+    video.availableResolutions = [...availableResolutions];
+    res.status(SETTINGS.STATUS.NO_CONTENT).json({});
+
 };
 
 export const deleteVideo = (req: Request, res: Response) => {
@@ -86,5 +110,5 @@ export const deleteVideo = (req: Request, res: Response) => {
         return;
     }
 
-    res.status(SETTINGS.STATUS.NOT_FOUND).json({ message: "Video NOT_FOUN" });
+    res.status(SETTINGS.STATUS.NOT_FOUND).json({});
 };

@@ -80,3 +80,60 @@ export const validateVideoQuality = (qualities: string[]): ErrorMessage[] => {
 
     return errorsMessages;
 }
+
+export const validationCanBeDownloaded = (canBeDownloaded: unknown): ErrorMessage[] => {
+    const errorsMessages: ErrorMessage[] = [];
+
+    if (canBeDownloaded === '') {
+        errorsMessages.push({
+            message: "CanBeDownloaded не может быть пустым",
+            field: "canBeDownloaded",
+        });
+    } else if (typeof canBeDownloaded !== "boolean") {
+        errorsMessages.push({
+            message: "CanBeDownloaded должен быть true|false",
+            field: "canBeDownloaded",
+        });
+    }
+
+    return errorsMessages;
+}
+
+export const validateMinAgeRestriction = (minAgeRestriction: number | null): ErrorMessage[] => {
+    const errorsMessages: ErrorMessage[] = [];
+
+    if (minAgeRestriction !== null) {
+        if (typeof minAgeRestriction !== "number" || !Number.isInteger(minAgeRestriction)) {
+            errorsMessages.push({
+                message: "minAgeRestriction должен быть не пустым и целым числом",
+                field: "minAgeRestriction",
+            });
+        } else if (minAgeRestriction < 1 || minAgeRestriction > 18) {
+            errorsMessages.push({
+                message: "MinAgeRestriction должен быть в диапазоне от 1 до 18",
+                field: "minAgeRestriction",
+            });
+        }
+    }
+
+    return errorsMessages;
+}
+
+export const validatePublicationDate = (publicationDate: string): ErrorMessage[] => {
+    const errorsMessages: ErrorMessage[] = [];
+
+    if (!publicationDate) {
+        errorsMessages.push({
+            message: "PublicationDate обязательно для заполнения",
+            field: "publicationDate",
+        });
+    } else if (isNaN(Date.parse(publicationDate))) {
+        errorsMessages.push({
+            message: "publicationDate должен быть в формате ISO 8601 (YYYY-MM-DDTHH:mm:ss.sssZ)",
+            field: "publicationDate",
+        });
+    }
+
+    return errorsMessages;
+};
+
