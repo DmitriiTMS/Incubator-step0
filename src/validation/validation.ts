@@ -58,12 +58,12 @@ export const validateVideoQuality = (qualities: string[]): ErrorMessage[] => {
     if (!Array.isArray(qualities)) {
         errorsMessages.push({
             message: "AvailableResolutions должен быть массивом",
-            field: "title",
+            field: "availableResolutions",
         });
     } else if (Array.isArray(qualities) && qualities.length === 0) {
         errorsMessages.push({
             message: "AvailableResolutions обязательно к заполнению",
-            field: "title",
+            field: "availableResolutions",
         });
     } else if (Array.isArray(qualities)) {
         const validQualities = Object.values(DBVideoQuality);
@@ -71,7 +71,7 @@ export const validateVideoQuality = (qualities: string[]): ErrorMessage[] => {
             if (!validQualities.includes(quality as DBVideoQuality)) {
                 errorsMessages.push({
                     message: 'Недопустимое значение в массиве',
-                    field: "videoQuality",
+                    field: "availableResolutions",
                 });
                 break
             }
