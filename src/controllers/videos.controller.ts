@@ -52,9 +52,7 @@ export const getVideoById = (req: Request, res: Response) => {
         res.status(SETTINGS.STATUS.OK).json(video);
         return;
     }
-    res.status(SETTINGS.STATUS.NOT_FOUND).json({
-        message: `Видео по ${id} не найдено`
-    });
+    res.status(SETTINGS.STATUS.NOT_FOUND).json();
 };
 
 export const updateVideo = (req: Request, res: Response) => {
@@ -63,7 +61,7 @@ export const updateVideo = (req: Request, res: Response) => {
     const video = DB.videos.find((video) => video.id === id);
 
     if (!video) {
-        res.status(SETTINGS.STATUS.NOT_FOUND).json({ });
+        res.status(SETTINGS.STATUS.NOT_FOUND).json();
         return;
     }
 
@@ -97,7 +95,7 @@ export const updateVideo = (req: Request, res: Response) => {
     video.createdAt = createdAt;
     video.publicationDate = publicationDate;
     video.availableResolutions = [...availableResolutions];
-    res.status(SETTINGS.STATUS.NO_CONTENT).json({});
+    res.status(SETTINGS.STATUS.NO_CONTENT).json();
 
 };
 
