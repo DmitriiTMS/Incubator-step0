@@ -132,6 +132,11 @@ export const validatePublicationDate = (publicationDate: string): ErrorMessage[]
             message: "publicationDate должен быть в формате ISO 8601 (YYYY-MM-DDTHH:mm:ss.sssZ)",
             field: "publicationDate",
         });
+    } else if (typeof publicationDate !== "string") {
+        errorsMessages.push({
+            message: "publicationDate не должно быть числом",
+            field: "publicationDate",
+        });
     }
 
     return errorsMessages;
