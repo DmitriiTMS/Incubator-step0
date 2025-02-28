@@ -22,7 +22,7 @@ export const createVideo = (req: Request, res: Response) => {
     if (checkValidateVideoQuality.length > 0) errors.push(...checkValidateVideoQuality);
 
     if (errors.length > 0) {
-        res.status(SETTINGS.STATUS.BAD_REQUEST).json(errors);
+        res.status(SETTINGS.STATUS.BAD_REQUEST).json({errorsMessages: errors});
         return;
     }
 
@@ -84,7 +84,7 @@ export const updateVideo = (req: Request, res: Response) => {
 
 
     if (errors.length > 0) {
-        res.status(SETTINGS.STATUS.BAD_REQUEST).json(errors);
+        res.status(SETTINGS.STATUS.BAD_REQUEST).json({errorsMessages: errors});
         return;
     }
 
