@@ -65,7 +65,7 @@ export const updateVideo = (req: Request, res: Response) => {
         return;
     }
 
-    const { title, author, availableResolutions, canBeDownloaded, minAgeRestriction, createdAt, publicationDate } = req.body;
+    const { title, author, availableResolutions, canBeDownloaded, minAgeRestriction, publicationDate } = req.body;
 
     const errors = [];
     const checkTitle = validateTitle(title);
@@ -92,7 +92,6 @@ export const updateVideo = (req: Request, res: Response) => {
     video.author = author;
     video.canBeDownloaded = canBeDownloaded;
     video.minAgeRestriction = minAgeRestriction;
-    video.createdAt = createdAt;
     video.publicationDate = publicationDate;
     video.availableResolutions = [...availableResolutions];
     res.status(SETTINGS.STATUS.NO_CONTENT).json();
