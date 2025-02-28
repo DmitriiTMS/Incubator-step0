@@ -122,12 +122,14 @@ export const validateMinAgeRestriction = (minAgeRestriction: number | null): Err
 export const validatePublicationDate = (publicationDate: string): ErrorMessage[] => {
     const errorsMessages: ErrorMessage[] = [];
 
-    if (!publicationDate) {
+    const publicationDateStr = String(publicationDate);
+
+    if (!publicationDateStr) {
         errorsMessages.push({
             message: "PublicationDate обязательно для заполнения",
             field: "publicationDate",
         });
-    } else if (isNaN(Date.parse(publicationDate))) {
+    } else if (isNaN(Date.parse(publicationDateStr))) {
         errorsMessages.push({
             message: "publicationDate должен быть в формате ISO 8601 (YYYY-MM-DDTHH:mm:ss.sssZ)",
             field: "publicationDate",
@@ -136,4 +138,5 @@ export const validatePublicationDate = (publicationDate: string): ErrorMessage[]
 
     return errorsMessages;
 };
+
 
