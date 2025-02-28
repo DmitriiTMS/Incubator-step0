@@ -4,7 +4,7 @@ config()
 export const SETTINGS = {
     PORT: process.env.PORT || 5000,
     PATH: {
-        VIDEOS: '/hometask_01/api/videos',
+        VIDEOS: '/videos',
     },
     STATUS: {
         OK: 200,

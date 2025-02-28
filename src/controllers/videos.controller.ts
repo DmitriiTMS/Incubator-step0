@@ -63,7 +63,7 @@ export const updateVideo = (req: Request, res: Response) => {
     const video = DB.videos.find((video) => video.id === id);
 
     if (!video) {
-        res.status(SETTINGS.STATUS.NOT_FOUND).json({});
+        res.status(SETTINGS.STATUS.NOT_FOUND).json({ });
         return;
     }
 
