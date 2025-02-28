@@ -5,6 +5,7 @@ export const SETTINGS = {
     PORT: process.env.PORT || 5000,
     PATH: {
         VIDEOS: '/videos',
+        TEST: '/testing/all-data'
     },
     STATUS: {
         OK: 200,
