@@ -106,9 +106,9 @@ export const deleteVideo = (req: Request, res: Response) => {
     const findVideo = DB.videos.find((video) => video.id === id);
     if (findVideo) {
         DB.videos = DB.videos.filter((video) => video.id !== id);
-        res.status(SETTINGS.STATUS.NO_CONTENT).json({});
+        res.status(SETTINGS.STATUS.NO_CONTENT)
         return;
     }
 
-    res.status(SETTINGS.STATUS.NOT_FOUND).json({});
+    res.status(SETTINGS.STATUS.NOT_FOUND)
 };
