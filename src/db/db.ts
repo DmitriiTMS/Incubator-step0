@@ -25,30 +25,5 @@ type DBType = {
 }
 
 export const DB: DBType = {
-    videos: [
-        // {
-        //     id: Date.now() + Math.random(),
-        //     title: "video 1",
-        //     author: "author 1",
-        //     canBeDownloaded: true,
-        //     minAgeRestriction: null,
-        //     createdAt: new Date().toISOString(),
-        //     publicationDate: new Date().toISOString(),
-        //     availableResolutions: [
-        //         DBVideoQuality.P144
-        //     ]
-        // },
-        // {
-        //     id: Date.now() + Math.random(),
-        //     title: "video 2",
-        //     author: "author 2",
-        //     canBeDownloaded: true,
-        //     minAgeRestriction: null,
-        //     createdAt: new Date().toISOString(),
-        //     publicationDate: new Date().toISOString(),
-        //     availableResolutions: [
-        //         DBVideoQuality.P144, DBVideoQuality.P1440, DBVideoQuality.P2160
-        //     ]
-        // },
-    ],
+    videos: [],
 }
